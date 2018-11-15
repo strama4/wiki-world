@@ -1,9 +1,57 @@
 <!DOCTYPE html>
 <html>
     <head>
-
+        <% include ./partials/head.ejs %>
     </head>
     <body>
-        Blocipedia
-    </body>
+        <% include ./partials/navbar.ejs %>
+
+        <main class="container">
+            <div class="row">
+                <div class="col-md-6 offset-sm-3">
+                    <h2 class="text-center">Blocipedia: Social, Markdown Wikis</h2>
+                </div>
+                
+            </div>
+            
+
+            <!-- Sign up box-->
+            <div class="row"> 
+                <div class="col-md-6 offset-sm-3 card">
+                    <div class="card-body text-center">
+                         <p>Create and Share Markdown Wikis</p>
+                        <form action="/users/sign_up">
+                            <input type="submit" class="btn btn-dark" value="Sign Up Here" />
+                        </form>
+                    </div>
+                   
+                    
+                </div>
+            </div>
+
+            <!-- Plan options-->
+            <div class="row">
+                <div class="col-sm-4 offset-sm-2 card">
+                        <div class="card-body text-center">
+                            <p class="text-center card-title">Create as many public wikis as you want</p>
+                            <form action="#">
+                                <input type="submit" class="btn btn-dark" value="Free Plan" />
+                            </form>
+                      </div>
+                    
+                </div>
+                <div class="col-sm-4 card">
+                    <div class="card-body text-center">
+                        <p class="card-title">Create private wikis</p>
+                        <form action="#">
+                                <input type="submit" class="btn btn-dark" value="Free Plan" />
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </main>
+        
+        <% include ./partials/baseScripts.ejs %>
+        
+ </body>
 </html>
