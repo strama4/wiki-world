@@ -1,4 +1,9 @@
 <nav class="nav justify-content-end">
-        <li class="nav-item"><a href="#" class="nav-link">Home</a></li>
-        <li class="nav-item"><a href="#" class="nav-link">Sign Up</a></li>
-    </nav>
+    <li class="nav-item"><a href="/" class="nav-link">Home</a></li>
+    <% if(currentUser) { %> 
+        <li class="nav-item"><a href="/users/sign_out" class="nav-link">Sign Out</a></li>
+    <% } else { %>
+        <li class="nav-item"><a href="/users/sign_up" class="nav-link">Sign Up</a></li>
+        <li class="nav-item"><a href="/users/sign_in" class="nav-link">Sign In</a></li>    
+    <% } %>
+</nav>

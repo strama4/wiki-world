@@ -33,7 +33,7 @@ describe('routes : users', () => {
                     name: 'Johnny',
                     email: 'johnnyboy@gmail.com',
                     password: 'hedachamp',
-                    password_conf: 'hedachamp'
+                    password_confirmation: 'hedachamp'
                 }
             }
             request.post(options, (err, res, body) => {
@@ -69,6 +69,16 @@ describe('routes : users', () => {
                     console.log(err);
                     done();
                 });
+            });
+        });
+    });
+
+    describe('GET /users/sign_in', () => {
+        it('should render a sign in page', (done) => {
+            request.get(`${base}sign_in`, (err, res, body) => {
+                expect(err).toBeNull();
+                expect(body).toContain('Sign in');
+                done();
             });
         });
     });
