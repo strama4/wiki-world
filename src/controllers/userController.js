@@ -55,9 +55,7 @@ module.exports = {
                 req.flash('notice', 'You\'ve successfully signed in!');
                 return res.redirect('/');
             });
-        })(req, res, next);
-          
-        
+        })(req, res, next); // <-- why?
         
         // (req, res, () => {
         //     if (!req.user) {

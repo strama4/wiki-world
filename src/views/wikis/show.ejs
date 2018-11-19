@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <% include ../static/partials/head.ejs %>
+    </head>
+    <body>
+        <% include ../static/partials/navbar.ejs %>
+
+        <% include ../static/partials/messages.ejs %>
+
+        <div class="container">
+            <h2><%= wiki.title %></h2>
+
+            <div class="wikiBody">
+                <p><%= wiki.body %></p>
+            </div>
+            <div>
+                <a href="/wikis/<%= wiki.id %>/edit" class="btn btn-dark">
+                    <span>Edit Wiki</span>
+                </a>
+                <form method="post" action="/wikis/<%= wiki.id %>/destroy" >
+                    <button type="submit" class="btn btn-danger">Delete Wiki</button>
+                </form>
+            </div>
+            
+        </div>
+
+        <% include ../static/partials/baseScripts.ejs %>
+    </body>
+</html>
