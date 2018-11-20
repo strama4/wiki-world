@@ -6,9 +6,8 @@
     <body>
         <% include ../static/partials/navbar.ejs %>
 
-        <% include ../static/partials/messages.ejs %>
-
         <div class="container">
+            <% include ../static/partials/messages.ejs %>
             <h2>Edit wiki</h2>
             <!-- Deal with getting this sending to correct route to update-->
             <form action="/wikis/<%= wiki.id %>/update" method="post">

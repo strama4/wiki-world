@@ -6,9 +6,10 @@
     <body>
         <% include ../static/partials/navbar.ejs %>
 
-        <% include ../static/partials/messages.ejs %>
+        
 
         <div class="container">
+            <% include ../static/partials/messages.ejs %>
             <h2>Create a new wiki</h2>
             <form action="/wikis/create" method="post">
                 <div class="form-group row">

@@ -6,21 +6,30 @@
     <body>
         <% include ../static/partials/navbar.ejs %>
 
-        <% include ../static/partials/messages.ejs %>
-
         <div class="container">
-            <h2><%= wiki.title %></h2>
+            <% include ../static/partials/messages.ejs %>
+            <div class="card">
+                <div class="card-body">
+                    <h2><%= wiki.title %></h2>
+                    <small>Created by <%= wiki.User.email %></small>
+                </div>
+            </div>          
 
             <div class="wikiBody">
                 <p><%= wiki.body %></p>
             </div>
             <div>
-                <a href="/wikis/<%= wiki.id %>/edit" class="btn btn-dark">
-                    <span>Edit Wiki</span>
-                </a>
-                <form method="post" action="/wikis/<%= wiki.id %>/destroy" >
-                    <button type="submit" class="btn btn-danger">Delete Wiki</button>
-                </form>
+                <% if(currentUser) { %>
+                    <a href="/wikis/<%= wiki.id %>/edit" class="btn btn-dark">
+                        <span>Edit Wiki</span>
+                    </a>
+                <% } %>
+                <% if(currentUser && currentUser.isAdmin()) { %>
+                    <form method="post" action="/wikis/<%= wiki.id %>/destroy" >
+                        <button type="submit" class="btn btn-danger">Delete Wiki</button>
+                    </form>
+                <% } %>
+                
             </div>
             
         </div>

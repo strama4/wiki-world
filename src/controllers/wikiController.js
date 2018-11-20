@@ -1,4 +1,5 @@
 const wikiQueries = require('../db/queries.wiki');
+const Authorizer = require('../policies/wikis');
 
 module.exports = {
     new(req, res, next) {
@@ -20,14 +21,32 @@ module.exports = {
             private: req.body.privateWiki,
             userId: req.user.id
         }
-        wikiQueries.createWiki(newWiki, (err, wiki) => {
-            if (err || wiki == null) {
-                res.redirect(500, '/wikis/new');
+        
+        let authorized;
+        
+        if (newWiki.private) {
+            authorized = new Authorizer(req.user, newWiki).createPrivate()
+        } else {
+            authorized = new Authorizer(req.user, newWiki).create();
+        }
+        
+        if (authorized) {
+            wikiQueries.createWiki(newWiki, (err, wiki) => {
+                if (err || wiki == null) {
+                    res.redirect(500, '/wikis/new');
+                }  else {
+                    req.flash('notice', 'New Wiki created!');
+                    res.redirect(302, `/wikis/${wiki.id}`);
+                }
+            });
+        } else {
+            if (newWiki.private) {
+                req.flash('notice', 'You must be a premium member to create private wikis.');
             } else {
-                req.flash('notice', 'New Wiki created!');
-                res.redirect(302, `/wikis/${wiki.id}`);
+                req.flash('notice', 'You are not authorized to do that.');
             }
-        });
+            res.redirect('/wikis');
+        }
     },
     show(req, res, next) {
         wikiQueries.showWiki(req.params.id, (err, wiki) => {
@@ -62,9 +81,9 @@ module.exports = {
         })
     },
     destroy(req, res, next) {
-        wikiQueries.deleteWiki(req.params.id, (err, deleteCount) => {
+        wikiQueries.deleteWiki(req, (err, deleteCount) => {
             if (err) {
-                res.redirect(`/wikis/${req.params.id}`);
+                res.redirect(500, `/wikis/${req.params.id}`);
             } else {
                 req.flash('notice', 'Wiki has been deleted');
                 res.redirect('/wikis');

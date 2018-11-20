@@ -6,9 +6,10 @@
     <body>
         <% include ../static/partials/navbar.ejs %>
 
-        <% include ../static/partials/messages.ejs %>
+        
 
         <div class="container">
+            <% include ../static/partials/messages.ejs %>
             <h1>Sign in to Blocipedia</h1>
             <form action="/users/sign_in" method="POST">
                 <div class="form-group">
