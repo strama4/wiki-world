@@ -8,13 +8,13 @@ module.exports = {
             email = req.body.email || email;
 
         
-            if (id && id !=0) {
+            if (id && id != -1) {
                 req.user = {
                     'id': id,
                     'role': role,
                     'email': email
                 }
-            } else if (id === 0) {
+            } else if (id === -1) {
                 delete req.user;
             } 
 

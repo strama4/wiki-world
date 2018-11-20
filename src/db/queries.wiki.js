@@ -47,40 +47,49 @@ module.exports = {
             callback(err);
         });
     },
-    updateWiki(id, updatedWiki, callback) {
-        Wiki.findByPk(id)
+    updateWiki(req, updatedWiki, callback) {
+        Wiki.findByPk(req.params.id)
         .then((wiki) => {
-            wiki.update({
-                title: updatedWiki.title,
-                body: updatedWiki.body,
-                private: updatedWiki.private
-            })
-            .then((upToDateWiki) => {
-                callback(null, upToDateWiki);
-            })
-            .catch((err) => {
-                callback(err);
-            });
+            if (!wiki) {
+                return callback('No wiki found');
+            }
+
+            const authorized = new Authorizer(req.user).update();
+            
+            if (authorized) {
+                 wiki.update({
+                    title: updatedWiki.title,
+                    body: updatedWiki.body,
+                    private: updatedWiki.private
+                })
+                .then((upToDateWiki) => {
+                    callback(null, upToDateWiki);
+                })
+                .catch((err) => {
+                    callback(err);
+                });
+            } else {
+                req.flash('notice', 'You are not authorized to do that.');
+                callback('Forbidden');
+            }
+           
         });
     },
     deleteWiki(req, callback) {
         return Wiki.findByPk(req.params.id)
         .then((wiki) => {
             const authorized = new Authorizer(req.user, wiki).destroy();
-
             if (authorized) {
                 wiki.destroy()
                 .then((deleteCount) => {
                     callback(null, deleteCount);
                 });
             } else {
-                console.log('at least it gets here');
                 req.flash('notice', 'You are not authorized to do that');
                 callback(401);
             }
         })
         .catch((err) => {
-            console.log(err);
             callback(err);
         });
     }

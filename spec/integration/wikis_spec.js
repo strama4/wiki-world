@@ -32,7 +32,8 @@ describe('routes : wiki', () => {
                         url: 'http://localhost:3000/auth/fake',
                         form: {
                             userId: this.user.id,
-                            email: this.user.email
+                            email: this.user.email,
+                            role: 0
                         }
                     }, (err, res, body) => {
                         done();
@@ -124,26 +125,35 @@ describe('routes : wiki', () => {
 
     describe('POST /wikis/:id/destroy', () => {
         it('should delete the wiki and redirect to the wikis page', (done) => {
-            Wiki.findAll()
-            .then((wikis) => {
-                const wikisCountBeforeDelete = wikis.length;
-                expect(wikisCountBeforeDelete).toBe(1);
-                request.post(`${base}${this.wiki.id}/destroy`, (err, res, body) => {
-                    Wiki.findAll()
-                    .then((wikis) => {
-                        expect(wikis.length).toBe(wikisCountBeforeDelete - 1);
-                        done();
-                    })
-                    .catch((err) => {
-                        console.log(err);
-                        done();
+            request.get({
+                url: 'http://localhost:3000/auth/fake',
+                form: {
+                    userId: this.user.id,
+                    email: this.user.email,
+                    role: 2
+                }
+            }, (err, res, body) => {
+                Wiki.findAll()
+                .then((wikis) => {
+                    const wikisCountBeforeDelete = wikis.length;
+                    expect(wikisCountBeforeDelete).toBe(1);
+                    request.post(`${base}${this.wiki.id}/destroy`, (err, res, body) => {
+                        Wiki.findAll()
+                        .then((wikisAfterDelete) => {
+                            expect(wikisAfterDelete.length).toBe(wikisCountBeforeDelete - 1);
+                            done();
+                        })
+                        .catch((err) => {
+                            console.log(err);
+                            done();
+                        });
                     });
+                })
+                .catch((err) => {
+                    console.log(err);
+                    done();
                 });
-            })
-            .catch((err) => {
-                console.log(err);
-                done();
-            });       
+            });  
         });
     });
 });

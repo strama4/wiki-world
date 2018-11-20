@@ -24,12 +24,12 @@ module.exports = {
         
         let authorized;
         
-        if (newWiki.private) {
+        if (newWiki.private === 'true') {
             authorized = new Authorizer(req.user, newWiki).createPrivate()
         } else {
             authorized = new Authorizer(req.user, newWiki).create();
         }
-        
+
         if (authorized) {
             wikiQueries.createWiki(newWiki, (err, wiki) => {
                 if (err || wiki == null) {
@@ -40,7 +40,7 @@ module.exports = {
                 }
             });
         } else {
-            if (newWiki.private) {
+            if (newWiki.private === 'true') {
                 req.flash('notice', 'You must be a premium member to create private wikis.');
             } else {
                 req.flash('notice', 'You are not authorized to do that.');
@@ -59,10 +59,17 @@ module.exports = {
     },
     edit(req, res, next) {
         wikiQueries.getWiki(req.params.id, (err, wiki) => {
+            const authorized = new Authorizer(req.user).edit();
+
             if (err || wiki === null) {
                 res.redirect(404, '/wikis');
             } else {
-                res.render('wikis/edit', { wiki });
+                if (authorized) {
+                    res.render('wikis/edit', { wiki });
+                } else {
+                    req.flash('notice', 'You are not authorized to do that.');
+                    res.redirect(`/wikis/${req.params.id}`);
+                }                
             }
         });
     },
@@ -72,7 +79,7 @@ module.exports = {
             body: req.body.body,
             private: req.body.privateWiki
         }
-        wikiQueries.updateWiki(req.params.id, updatedWiki, (err, wiki) => {
+        wikiQueries.updateWiki(req, updatedWiki, (err, wiki) => {
             if (err) {
                 res.redirect(`/wikis/${req.params.id}/edit`);
             } else {

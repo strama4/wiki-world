@@ -26,5 +26,6 @@ module.exports = (sequelize, DataTypes) => {
     });
 
   };
+
   return Wiki;
 };
