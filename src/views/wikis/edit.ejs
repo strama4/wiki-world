@@ -9,7 +9,6 @@
         <div class="container">
             <% include ../static/partials/messages.ejs %>
             <h2>Edit wiki</h2>
-            <!-- Deal with getting this sending to correct route to update-->
             <form action="/wikis/<%= wiki.id %>/update" method="post">
                 <div class="form-group row">
                     <label for="title">Title: </label>
@@ -21,12 +20,11 @@
                 </div>
                 <div class="form-group btn-group-toggle" data-toggle="buttons">
                     <span>Who can see this wiki?</span>
-                    <label class="btn btn-secondary">
-                        <!-- Deal with setting the active feature to the current selection in wiki -->
-                        <input type="radio" name="privateWiki" autocomplete="off" value="false"> Public
+                    <label class="btn btn-secondary <%= wiki.private == false ? 'active' : '' %> ">
+                        <input type="radio" name="privateWiki" autocomplete="off" value="false" <% if(!wiki.private) { %>selected<% } %> > Public
                     </label>
-                    <label class="btn btn-secondary">
-                        <input type="radio" name="privateWiki" autocomplete="off" value="true" active> Private
+                    <label class="btn btn-secondary <%= wiki.private == true ? 'active' : '' %>">
+                        <input type="radio" name="privateWiki" autocomplete="off" value="true" <% if(wiki.private) { %>selected<% } %> >  Private
                     </label>
                 </div>
                 <div class="form-group row">

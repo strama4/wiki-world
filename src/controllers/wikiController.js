@@ -77,8 +77,9 @@ module.exports = {
         let updatedWiki = {
             title: req.body.title,
             body: req.body.body,
-            private: req.body.privateWiki
+            private: req.body.privateWiki 
         }
+        console.log(req);
         wikiQueries.updateWiki(req, updatedWiki, (err, wiki) => {
             if (err) {
                 res.redirect(`/wikis/${req.params.id}/edit`);

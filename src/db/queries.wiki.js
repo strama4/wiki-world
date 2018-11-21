@@ -60,7 +60,7 @@ module.exports = {
                  wiki.update({
                     title: updatedWiki.title,
                     body: updatedWiki.body,
-                    private: updatedWiki.private
+                    private: updatedWiki.private || wiki.private
                 })
                 .then((upToDateWiki) => {
                     callback(null, upToDateWiki);
