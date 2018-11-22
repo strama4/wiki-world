@@ -24,8 +24,9 @@
             </div>
             <!-- Private wikis -->   
             <div>
-                <h2>Your Private Wikis</h2>
-                <% if(wikis) { %> 
+                
+                <% if(wikis && currentUser) { %>
+                    <h2>Your Private Wikis</h2> 
                     <ul>
                         <% wikis.forEach((wiki) => { %> 
                             <% if(wiki.private && wiki.User.id === currentUser.id) { %> 
