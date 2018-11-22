@@ -1,6 +1,9 @@
 const userQueries = require('../db/queries.user');
+const wikiQueries = require('../db/queries.wiki');
 const passport = require('passport');
 const sgMail = require('@sendgrid/mail');
+const stripeKey = process.env.STRIPE_PRIVATE_KEY;
+const stripe = require("stripe")(stripeKey);
 
 module.exports = {
     signUp(req, res, next) {
@@ -72,5 +75,68 @@ module.exports = {
         req.logout();
         req.flash('notice', 'You\'ve successfully logged out');
         res.redirect('/');
+    },
+    showPremium(req, res, next) {
+        userQueries.getUser(req.params.id, (err, user) => {
+            if (err || user == null) {
+                req.flash('error', err);
+                res.redirect(404, '/');
+            } else {
+                res.render('users/premium', {user});
+            }
+        })
+    },
+    upgradeToPremium(req, res, next) {
+        const token = req.body.stripeToken;
+
+        userQueries.getUser(req.params.id, (err, user) => {
+            if (!user) {
+                req.flash('error', 'No user exists');
+                res.redirect('/');
+            } else {
+                stripe.charges.create({
+                    amount: 1500,
+                    currency: 'usd',
+                    source: token
+                })
+                .then((charge) => {
+                    userQueries.toggleUser(user.id, (err, user) => {
+                        if (err) {
+                            req.flash('error', err);
+                        } else {
+                            req.flash('notice', 'Congratulations. You are now a premium user!');
+                        }
+                        res.redirect('/');
+                    })
+                })
+                .catch((err) => {
+                    req.flash('error', err);
+                    res.redirect('/');
+                })
+            }     
+        });              
+    },
+    showDowngrade(req, res, next) {
+        userQueries.getUser(req.params.id, (err, user) => {
+            if (err || user == null) {
+                req.flash('error', err);
+                res.redirect('/');
+            } else {
+                res.render('users/downgrade', { user });
+            }
+        })
+    },
+    downgrade(req, res, next) {
+        wikiQueries.makeWikisPublic(req.params.id, (err, affectedRows) => {
+            userQueries.toggleUser(req.params.id, (err, user) => {
+                if (err || user == null) {
+                    req.flash('error', err);
+                    res.redirect('/');
+                } else {
+                    req.flash('notice', 'Your account has been successfully changed to Standard');
+                    res.redirect('/');
+                }
+            });
+        });
     }
 }

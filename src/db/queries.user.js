@@ -17,5 +17,27 @@ module.exports = {
         .catch((err) => {
             callback(err);
         })
+    },
+    getUser(id, callback) {
+        return User.findByPk(id)
+        .then((user) => {
+            callback(null, user);
+        })
+        .catch((err) => {
+            callback(err);
+        })
+    },
+    toggleUser(id, callback) {
+        return User.findByPk(id)
+        .then((user) => {
+            let role = user.role === 0 ? 1 : 0;
+            user.update({role})
+            .then((updatedUser) => {
+                callback(null, updatedUser);
+            })
+            .catch((err) => {
+                callback(err);
+            })
+        })
     }
 }

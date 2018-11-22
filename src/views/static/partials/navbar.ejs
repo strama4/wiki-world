@@ -7,7 +7,10 @@
         <li class="nav-item"><a href="/users/sign_up" class="nav-link">Sign Up</a></li>
         <li class="nav-item"><a href="/users/sign_in" class="nav-link">Sign In</a></li>    
     <% } %>
-    <% if(!currentUser || (!currentUser.isPremium() && !currentUser.isAdmin())) { %> 
-        <li class="nav-item"><a href="#" class="nav-link">Get Premium</a></li>
+    <% if(currentUser && (!currentUser.isPremium() && !currentUser.isAdmin())) { %> 
+        <li class="nav-item"><a href="/users/<%= currentUser.id %>/premium" class="nav-link">Get Premium</a></li>
+    <% } %>
+    <% if(currentUser && currentUser.isPremium()) { %>
+        <li class="nav-item"><a href="/users/<%= currentUser.id %>/downgrade" class="nav-link">Go Standard</a></li>
     <% } %>
 </nav>

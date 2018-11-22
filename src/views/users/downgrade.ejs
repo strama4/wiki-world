@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <% include ../static/partials/head.ejs %>
+    </head>
+    <body>
+        <% include ../static/partials/navbar.ejs %>
+
+        <div class="container">
+            <% include ../static/partials/messages.ejs %>
+            <h2>Downgrade to Standard Subscription</h2>
+
+            <p>You can always choose to downgrade back to our Standard subscription. Please
+                be aware that this will make all of your private wikis public.
+            </p>
+            <form action="/users/<%= user.id %>/downgrade" method="post">
+                <button class="btn btn-dark" type="submit">Downgrade to Standard</button>
+            </form>
+        </div>
+
+        <% include ../static/partials/baseScripts.ejs %>
+    </body>
+</html>

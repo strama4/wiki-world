@@ -92,5 +92,19 @@ module.exports = {
         .catch((err) => {
             callback(err);
         });
+    },
+    makeWikisPublic(id, callback) {
+        return Wiki.update({
+            private: false
+        }, {
+            where: { userId: id }
+        })
+        .then((affectedRows) => {
+            callback(null, affectedRows);
+        })
+        .catch((err) => {
+            callback(err);
+        })
+        
     }
 }

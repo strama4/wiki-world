@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <% include ../static/partials/head.ejs %>
+    </head>
+    <body>
+        <% include ../static/partials/navbar.ejs %>
+
+        <div class="container">
+            <% include ../static/partials/messages.ejs %>
+            <h2>Upgrade to Premium!</h2>
+            
+            <div class="status">
+                <% let role = user.role === 0 ? 'Standard' : 'Premium' %>
+                <p>Your current subscription level is: <%= role %></p>
+                <% if (role === 'Standard') { %> 
+                    <p>For only $15, you can become a Premium user!</p>
+                     
+                    <form action="/users/<%= user.id %>/premium" method="POST">
+                    <script
+                      src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                      data-key="<%= process.env.STRIPE_PUBLIC_KEY %>"
+                      data-amount="1500"
+                      data-name="Blocipedia"
+                      data-description="Upgrade to Premium"
+                      data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
+                      data-locale="auto"
+                      data-currency="usd">
+                    </script>
+                  </form>
+
+                <% } else { %> 
+                   <p>You're already a Premium member so you can enjoy all of the benefits that come with that!</p> 
+                <% } %>
+            </div>
+            
+
+            
+            <!-- Have option to fill out for premium -->
+
+            <!-- Submit form that actions to /users/:id/premium/upgrade -->
+
+            
+        </div>
+        <% include ../static/partials/baseScripts.ejs %>
+    </body>
+</html>
