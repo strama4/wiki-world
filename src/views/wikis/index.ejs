@@ -6,22 +6,35 @@
     </head>
     <body> 
         <% include ../static/partials/navbar.ejs %>  
-        
-        
-        
+
         <div class="container">
             <% include ../static/partials/messages.ejs %>
             <h2>Choose a wiki to explore</h2>
-
+            <!-- Public wikis -->
             <div>
                 <% if(wikis) { %> 
                     <ul>
                         <% wikis.forEach((wiki) => { %>
-                            <li><a href="/wikis/<%= wiki.id %>"><%= wiki.title %></a></li>
+                            <% if(!wiki.private) { %> 
+                                <li><a href="/wikis/<%= wiki.id %>"><%= wiki.title %></a></li>
+                            <% } %>
                         <% }) %>
                     </ul>
                 <% } %>
             </div>
+            <!-- Private wikis -->   
+            <div>
+                <h2>Your Private Wikis</h2>
+                <% if(wikis) { %> 
+                    <ul>
+                        <% wikis.forEach((wiki) => { %> 
+                            <% if(wiki.private && wiki.User.id === currentUser.id) { %> 
+                                <li><a href="/wikis/<%= wiki.id %>"><%= wiki.title %></a></li>   
+                            <% } %>
+                        <% }) %>
+                    </ul>    
+                <% } %>
+            </div>  
             
             <div>
                 <h2>Or create your own wiki...</h2>
