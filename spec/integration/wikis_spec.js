@@ -5,6 +5,7 @@ const base = 'http://localhost:3000/wikis/';
 
 const User = require('../../src/db/models').User;
 const Wiki = require('../../src/db/models').Wiki;
+const Collaborator = require('../../src/db/models').Collaborator;
 
 describe('routes : wiki', () => {
     beforeEach((done) => {
@@ -14,7 +15,8 @@ describe('routes : wiki', () => {
             User.create({
                 name: 'Johnny',
                 email: 'johnnyboy@gmail.com',
-                password: 'hedachamp'
+                password: 'hedachamp',
+                confirmPassword: 'hedachamp'
             })
             .then((user) => {
                 this.user = user;
@@ -33,12 +35,12 @@ describe('routes : wiki', () => {
                         form: {
                             userId: this.user.id,
                             email: this.user.email,
-                            role: 0
+                            role: 0,
+                            username: this.user.name
                         }
                     }, (err, res, body) => {
                         done();
                     });
-                    
                 });
             });
         });
@@ -130,7 +132,8 @@ describe('routes : wiki', () => {
                 form: {
                     userId: this.user.id,
                     email: this.user.email,
-                    role: 2
+                    role: 2,
+                    username: this.user.name
                 }
             }, (err, res, body) => {
                 Wiki.findAll()

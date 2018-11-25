@@ -9,7 +9,7 @@
 
         <div class="container">
             <% include ../static/partials/messages.ejs %>
-            <h2>Choose a wiki to explore</h2>
+            <h2>Choose a wiki to explore:</h2>
             <!-- Public wikis -->
             <div>
                 <% if(wikis) { %> 
@@ -22,10 +22,9 @@
                     </ul>
                 <% } %>
             </div>
-            <!-- Private wikis -->   
+            <!-- Private wikis if premium/admin user-->   
             <div>
-                
-                <% if(wikis && currentUser) { %>
+                <% if(wikis && currentUser && (currentUser.isAdmin() || currentUser.isPremium())) { %>
                     <h2>Your Private Wikis</h2> 
                     <ul>
                         <% wikis.forEach((wiki) => { %> 
@@ -35,8 +34,28 @@
                         <% }) %>
                     </ul>    
                 <% } %>
-            </div>  
-            
+            <!-- Wikis where user is a collaborator -->   
+            </div>
+            <div>
+                 <% if (currentUser) { %> 
+                    <h2>Wikis you are a collaborator for: </h2>       
+                    <ul>
+                        <% wikis.forEach((wiki) => { %> 
+                            <% if (wiki.collaborators.length) { %> 
+                                <% if(wiki.collaborators.find((x) => x.userId === currentUser.id)) { %> 
+                                    <li><a href="/wikis/<%= wiki.id %>"><%= wiki.title %></a></li>        
+                                <% } %>   
+                            <% } %>
+                            
+                            
+                        <% }) %>
+                    </ul>
+                <% } %>
+            </div>
+               
+            <div>
+
+            </div>
             <div>
                 <h2>Or create your own wiki...</h2>
                 <a href="/wikis/new" class="btn btn-dark"><span>Create Wiki</span></a>

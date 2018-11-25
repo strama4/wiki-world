@@ -8,38 +8,56 @@
 
         <div class="container">
             <% include ../static/partials/messages.ejs %>
-            <h2>Edit wiki</h2>
-            <form action="/wikis/<%= wiki.id %>/update" method="post">
+            <h2 class="form-group row">Edit wiki</h2>
+            <!-- Forms declaration -->
+            <form id="mainForm" action="/wikis/<%= wiki.id %>/update" method="post"></form>
+            <!-- Add action and method to add collaborator -->
+            <form id="collaboratorForm" action="/wikis/<%= wiki.id %>/collaborators/add" method="post"></form> 
+
                 <div class="form-group row">
                     <label for="title">Title: </label>
-                    <input type="text" name="title" class="form-control" placeholder="Enter a title" aria-describedby="titleHelp" value="<%= wiki.title %>">
+                    <input type="text" name="title" form="mainForm" class="form-control" placeholder="Enter a title" aria-describedby="titleHelp" value="<%= wiki.title %>">
                 </div>
                 <div class="form-group row">
                     <label for="body">Body: </label>
-                    <textarea name="body" class="form-control" rows="10" placeholder="Make the first addition here" aria-describedby="bodyHelp"><%= wiki.body %></textarea>
+                    <textarea name="body" form="mainForm" class="form-control" rows="10" placeholder="Make the first addition here" aria-describedby="bodyHelp"><%= wiki.body %></textarea>
                 </div>
-                <div class="form-group btn-group-toggle" data-toggle="buttons">
-                    <span>Who can see this wiki?</span>
-                    <label class="btn btn-secondary <%= wiki.private == false ? 'active' : '' %> ">
-                        <input type="radio" name="privateWiki" autocomplete="off" value="false" <% if(!wiki.private) { %>selected<% } %> > Public
-                    </label>
-                    <label class="btn btn-secondary <%= wiki.private == true ? 'active' : '' %>">
-                        <input type="radio" name="privateWiki" autocomplete="off" value="true" <% if(wiki.private) { %>selected<% } %> >  Private
-                    </label>
-                </div>
-                <div class="form-group row">
-                    <button type="submit" class="btn btn-secondary btn-block">Submit</button>
-                </div>
-                <div class="form-group-row">
-                        <!-- Add action and method to add collaborator -->
-                        <form>
-                            <label for="collaborator">Add collaborator: </label>
-                            <input type="text" name="collaborator" class="form-control" placeholder="Add a collaborator">
-                        </form>
-                        <!-- Add list of current collaborators with option to remove them -->
+                <% if(wiki.userId === currentUser.id) { %> 
+                    <div class="form-group btn-group-toggle" data-toggle="buttons">
+                        <span>Who can see this wiki?</span>
+                        <label class="btn btn-secondary <%= wiki.private == false ? 'active' : '' %> ">
+                            <input type="radio" name="privateWiki" form="mainForm" autocomplete="off" value="false" <% if(!wiki.private) { %>selected<% } %> > Public
+                        </label>
+                        <label class="btn btn-secondary <%= wiki.private == true ? 'active' : '' %>">
+                            <input type="radio" name="privateWiki" form="mainForm" autocomplete="off" value="true" <% if(wiki.private) { %>selected<% } %> >  Private
+                        </label>
                     </div>
-                
-            </form> 
+                    <div class="input-group row mb-3">
+                        <label class="input-group-text" for="collaborator">Add collaborator: </label>
+                        <input type="text" name="collaborator" class="form-control" placeholder="Enter email" form="collaboratorForm">
+                        <button type="submit" form="collaboratorForm" class="btn btn-secondary">Add</button>
+                    </div>
+                    <!-- Add list of current collaborators with option to remove them -->
+                        
+                    <div>
+                        <% if(wiki.collaborators) { %>
+                            <h4 class="form-group row">Collaborators</h4>
+                            <div class="form-group row">
+                                <ul class="list-unstyled">
+                                    <% wiki.collaborators.forEach((collaborator) => { %> 
+                                        <li><%- include("../collaborators/show.ejs", { collaborator }) %></li>   
+                                    <% }) %>
+                            </ul>
+
+                            </div>
+                            
+                                
+                        <% } %> 
+                    </div>
+                <% } %>  
+                <div class="form-group row">
+                    <button type="submit" form="mainForm" class="btn btn-secondary btn-block">Submit</button>
+                </div> 
         </div>
         
         <% include ../static/partials/baseScripts.ejs %>

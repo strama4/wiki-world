@@ -14,6 +14,7 @@ module.exports = {
         app.use(logger('dev'));
         app.use(bodyParser.urlencoded({ extended: true }));
         app.use(validator());
+        app.use(express.static(path.join(__dirname,'..', 'assets')));
         app.use(session({
             resave: false,
             saveUninitialized: false,
