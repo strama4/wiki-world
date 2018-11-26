@@ -20,7 +20,7 @@
                 </div>
                 <div class="form-group row">
                     <label for="body">Body: </label>
-                    <textarea name="body" form="mainForm" class="form-control" rows="10" placeholder="Make the first addition here" aria-describedby="bodyHelp"><%= wiki.body %></textarea>
+                    <textarea name="body" form="mainForm" class="form-control wiki-body" rows="10" placeholder="Make the first addition here" aria-describedby="bodyHelp"><%= wiki.body %></textarea>
                 </div>
                 <% if(wiki.userId === currentUser.id) { %> 
                     <div class="form-group btn-group-toggle" data-toggle="buttons">
