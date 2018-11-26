@@ -9,9 +9,9 @@
         <div class="container">
             <% include ../static/partials/messages.ejs %>
             <h2 class="form-group row">Edit wiki</h2>
-            <!-- Forms declaration -->
+            
+            <!-- Form declarations -->
             <form id="mainForm" action="/wikis/<%= wiki.id %>/update" method="post"></form>
-            <!-- Add action and method to add collaborator -->
             <form id="collaboratorForm" action="/wikis/<%= wiki.id %>/collaborators/add" method="post"></form> 
 
                 <div class="form-group row">

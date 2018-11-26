@@ -16,4 +16,8 @@ module.exports = class WikiPolicy extends ApplicationPolicy {
     edit() {
         return this.new();
     }
+
+    updateToPrivate() {
+        return this.createPrivate(); 
+    }
 }

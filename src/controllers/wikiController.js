@@ -81,13 +81,32 @@ module.exports = {
             body: req.body.body,
             private: req.body.privateWiki 
         }
-        wikiQueries.updateWiki(req, updatedWiki, (err, wiki) => {
-            if (err) {
+
+        if (updatedWiki.private && updatedWiki.private === 'true') {
+            let authorized = new Authorizer(req.user).updateToPrivate();
+            if (!authorized) {
+                req.flash('error', 'You must be a Premium user to update to private wiki.')
                 res.redirect(`/wikis/${req.params.id}/edit`);
             } else {
-                res.redirect(`/wikis/${req.params.id}`);
+                wikiQueries.updateWiki(req, updatedWiki, (err, wiki) => {
+                    if (err) {
+                        res.redirect(`/wikis/${req.params.id}/edit`);
+                    } else {
+                        res.redirect(`/wikis/${req.params.id}`);
+                    }
+                }) 
             }
-        })
+        } else {
+            wikiQueries.updateWiki(req, updatedWiki, (err, wiki) => {
+                if (err) {
+                    res.redirect(`/wikis/${req.params.id}/edit`);
+                } else {
+                    res.redirect(`/wikis/${req.params.id}`);
+                }
+            }); 
+        }
+
+        
     },
     destroy(req, res, next) {
         wikiQueries.deleteWiki(req, (err, deleteCount) => {

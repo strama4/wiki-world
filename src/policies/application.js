@@ -16,6 +16,10 @@ module.exports = class ApplicationPolicy {
         return this.user && this.user.role === 1;
     }
 
+    _isCollborator() {
+        return 
+    }
+
     new() {
         return this.user != null;
     }
