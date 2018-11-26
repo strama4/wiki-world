@@ -19,7 +19,7 @@
                     <form action="/users/<%= user.id %>/premium" method="POST">
                     <script
                       src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-                      data-key="<%= process.env.STRIPE_PUBLIC_KEY %>"
+                      data-key="<%= process.env.PUBLISHABLE_KEY %>"
                       data-amount="1500"
                       data-name="Blocipedia"
                       data-description="Upgrade to Premium"

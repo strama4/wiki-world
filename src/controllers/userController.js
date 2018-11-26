@@ -2,7 +2,7 @@ const userQueries = require('../db/queries.user');
 const wikiQueries = require('../db/queries.wiki');
 const passport = require('passport');
 const sgMail = require('@sendgrid/mail');
-const stripeKey = process.env.STRIPE_PRIVATE_KEY;
+const stripeKey = process.env.SECRET_KEY;
 const stripe = require("stripe")(stripeKey);
 
 module.exports = {
