@@ -31,3 +31,8 @@ body {
     padding: 20px;
     background-color: white;
 }
+
+.alert-danger, .alert-warning {
+    text-align: center;
+    font-size: 1.5rem;
+}
