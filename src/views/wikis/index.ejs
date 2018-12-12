@@ -58,7 +58,12 @@
             </div>
             <div>
                 <h2>Or create your own wiki...</h2>
-                <a href="/wikis/new" class="btn btn-dark"><span>Create Wiki</span></a>
+                <% if(currentUser) { %>
+                    <a href="/wikis/new" class="btn btn-dark"><span>Create Wiki</span></a>
+                <% } else { %> 
+                    <a href="/users/sign_in" class="btn btn-dark"><span>Create Wiki</span></a>
+                <% } %>
+                
             </div>
             
 
