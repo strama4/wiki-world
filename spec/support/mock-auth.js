@@ -11,7 +11,7 @@ module.exports = {
         
             if (id && id != -1) {
                 req.user = {
-                    'id': id,
+                    'id': Number.parseInt(id),
                     'role': role,
                     'email': email,
                     'name': username
@@ -25,7 +25,7 @@ module.exports = {
         function route(req, res) {
             res.redirect('/');
         }
-
+        
         app.use(middleware);
         app.get('/auth/fake', route);
         

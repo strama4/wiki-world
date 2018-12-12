@@ -58,7 +58,7 @@ module.exports = {
                 req.flash('notice', 'You\'ve successfully signed in!');
                 return res.redirect('/');
             });
-        })(req, res, next); // <-- why?
+        })(req, res, next); // <-- why? Code breaks without it 
         
         // (req, res, () => {
         //     if (!req.user) {

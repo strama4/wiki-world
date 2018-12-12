@@ -48,7 +48,7 @@ describe('routes : collaborator', () => {
                                 email: this.user.email,
                                 role: 1,
                                 username: this.user.name
-                            }
+                            },
                         }, (err, res, body) => {
                             done();
                         });
@@ -73,13 +73,14 @@ describe('routes : collaborator', () => {
                 url: `${base}${this.wiki.id}/collaborators/add`,
                 form: {
                     collaborator: 'billyboy@gmail.com'
-                }
-            }
+                },
+                followRedirect: false
+            };
             request.post(options, (err, res, body) => {
                 Collaborator.findOne({
                     where: { 
-                        userId: this.otherUser.id,
-                        wikiId: this.wiki.id
+                        wikiId: this.wiki.id,
+                        userId: this.otherUser.id
                     }
                 })
                 .then((collaboratorObj) => {
@@ -184,8 +185,7 @@ describe('routes : collaborator', () => {
                     }
                 }
                 request.post(options, (err, res, body) => {
-                    console.log('Error is: ', err);
-                    expect(err.message).toContain('You are not the owner of this wiki');
+                    expect(res.headers.error).toContain('Only the owner can add collaborators to this wiki');
                     done();
                 });
             });

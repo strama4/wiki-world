@@ -5,9 +5,11 @@ module.exports = {
         collaboratorQueries.createCollaborator(req, (err, collaborator) => {
             if (err) {
                 req.flash('error', err);
+                res.append('error', err);
                 res.redirect(`/wikis/${req.params.id}/edit`);
             } else {
                 req.flash('notice', 'Collaborator added!');
+                
                 res.redirect(`/wikis/${req.params.id}/edit`);
             }
         })

@@ -16,6 +16,7 @@ module.exports = {
             } else {
                 Wiki.findByPk(req.params.id)
                 .then((wiki) => {
+                        console.log('Req.user', req.user);
                         const authorized = new Authorizer(req.user, wiki).addCollaborator();
                         if (authorized) {
                            Collaborator.findOne({ where: {
